@@ -29,10 +29,18 @@ namespace PDFReader
         public MainPage()
         {
             this.InitializeComponent();
-            pdftron.PDFNet.Initialize("your_key");
+            pdftron.PDFNet.Initialize();
+            Setup();
             MyPDFViewCtrl = new pdftron.PDF.PDFViewCtrl();
             PDFViewBorder.Child = MyPDFViewCtrl;
             OpenButton.Click += OpenButton_Click;
+        }
+
+        async void Setup()
+        {
+            StorageFolder localFolder = Windows.ApplicationModel.Package.Current.InstalledLocation;
+            var assets = await localFolder.GetFolderAsync("Assets");
+            pdftron.PDFNet.AddResourceSearchPath(assets.Path);
         }
 
         async void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -41,14 +49,33 @@ namespace PDFReader
             FileOpenPicker fileOpenPicker = new FileOpenPicker();
             fileOpenPicker.ViewMode = PickerViewMode.List;
             fileOpenPicker.FileTypeFilter.Add(".pdf");
+            fileOpenPicker.FileTypeFilter.Add(".doc");
+            fileOpenPicker.FileTypeFilter.Add(".docx");
+            fileOpenPicker.FileTypeFilter.Add(".ppt");
+            fileOpenPicker.FileTypeFilter.Add(".pptx");
+            fileOpenPicker.FileTypeFilter.Add(".xls");
+            fileOpenPicker.FileTypeFilter.Add(".xlsx");
             StorageFile file = await fileOpenPicker.PickSingleFileAsync();
 
             // Create a PDFDocument and use it as the source for the PDFViewCtrl
             if (file != null)
             {
-                Windows.Storage.Streams.IRandomAccessStream stream = await
-                    file.OpenAsync(FileAccessMode.ReadWrite);
-                pdftron.PDF.PDFDoc doc = new pdftron.PDF.PDFDoc(stream);
+                pdftron.PDF.PDFDoc doc;
+                Windows.Storage.Streams.IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.Read);
+                using (pdftron.Filters.RandomAccessStreamFilter filter = new pdftron.Filters.RandomAccessStreamFilter(stream))
+                {
+                    //pdftron.Filters.FilterReader reader = new pdftron.Filters.FilterReader(filter);
+
+                    if (file.FileType == ".pdf")
+                    {
+                        doc = new pdftron.PDF.PDFDoc(file);
+                    }
+                    else
+                    {
+                        doc = new pdftron.PDF.PDFDoc();
+                        pdftron.PDF.Convert.OfficeToPDF(doc, filter, null);
+                    }
+                }
                 MyPDFViewCtrl.SetDoc(doc);
             }
         }
