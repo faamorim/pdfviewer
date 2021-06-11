@@ -24,9 +24,12 @@ namespace PDFReader
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        public ManagerDataContext ViewModel { get; set; }
+
         public MainPage()
         {
             this.InitializeComponent();
+            ViewModel = new ManagerDataContext();
             OpenButton.Click += OpenButton_Click;
         }
         async void OpenButton_Click(object sender, RoutedEventArgs e)
@@ -40,7 +43,8 @@ namespace PDFReader
             // Create a PDFDocument and use it as the source for the PDFViewCtrl
             if (file != null)
             {
-                (DataContext as ManagerDataContext).CurrentDocument = await Document.Load(file);
+                var doc = await Document.Load(file);
+                ViewModel.CurrentDocument = doc;
             }
         }
     }

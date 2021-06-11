@@ -9,10 +9,6 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <Page.DataContext>
-        <local:ManagerDataContext/>
-    </Page.DataContext>
-
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -23,7 +19,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
             <Button x:Name="OpenButton">Open</Button>
         </StackPanel>
-        
-        <local:Viewer Grid.Row="2" Document="{Binding CurrentDocument}"/>
+
+        <local:Viewer Grid.Row="2" Document="{x:Bind Path=ViewModel.CurrentDocument, Mode=OneWay}"/>
     </Grid>
 </Page>
