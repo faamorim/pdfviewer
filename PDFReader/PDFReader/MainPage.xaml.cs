@@ -30,22 +30,6 @@ namespace PDFReader
         {
             this.InitializeComponent();
             ViewModel = new ManagerViewModel();
-            OpenButton.Click += OpenButton_Click;
-        }
-        async void OpenButton_Click(object sender, RoutedEventArgs e)
-        {
-            // Get a file from the file picker.
-            FileOpenPicker fileOpenPicker = new FileOpenPicker();
-            fileOpenPicker.ViewMode = PickerViewMode.List;
-            PDFHelper.PrepareFileOpenPicker(fileOpenPicker);
-            StorageFile file = await fileOpenPicker.PickSingleFileAsync();
-
-            // Create a PDFDocument and use it as the source for the PDFViewCtrl
-            if (file != null)
-            {
-                var doc = await Document.Load(file);
-                ViewModel.CurrentDocument = doc;
-            }
         }
     }
 }

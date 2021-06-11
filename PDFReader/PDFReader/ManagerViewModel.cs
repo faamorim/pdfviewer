@@ -4,11 +4,15 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
 
 namespace PDFReader
 {
     public class ManagerViewModel : ViewModelBase
     {
+        public Command OpenCommand {get; private set;}
+
         DocumentManager _manager;
         Document _currentDocument;
 
@@ -47,6 +51,7 @@ namespace PDFReader
         public ManagerViewModel()
         {
             Manager = new DocumentManager();
+            OpenCommand = new Command(new Action(Open));
         }
 
         ~ManagerViewModel()
@@ -72,6 +77,28 @@ namespace PDFReader
                     break;
             }
             OnPropertyChanged(nameof(Documents));
+        }
+
+        public async void Open()
+        {
+            // Get a file from the file picker.
+            FileOpenPicker fileOpenPicker = new FileOpenPicker();
+            fileOpenPicker.ViewMode = PickerViewMode.List;
+            PDFHelper.PrepareFileOpenPicker(fileOpenPicker);
+            StorageFile file = await fileOpenPicker.PickSingleFileAsync();
+
+            // Create a PDFDocument and use it as the source for the PDFViewCtrl
+            if (file != null)
+            {
+                if (Documents.FirstOrDefault(doc => doc.File.Path == file.Path) is Document document)
+                {
+                    CurrentDocument = document;
+                }
+                else
+                {
+                    Manager.Load(file);
+                }
+            }
         }
     }
 }

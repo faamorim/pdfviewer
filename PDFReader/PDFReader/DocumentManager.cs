@@ -14,15 +14,13 @@ namespace PDFReader
 
         public void Load(StorageFile file)
         {
-            var doc = Document.Load(file);
-            doc.ContinueWith((task) =>
+            Document.Load(file).ContinueWith((task) =>
             {
                 if (task.IsCompleted)
                 {
                     Documents.Add(task.Result);
                 }
-            }
-            );
+            }, TaskContinuationOptions.ExecuteSynchronously);
         }
     }
 }

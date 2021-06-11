@@ -15,9 +15,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-
+        
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-            <Button x:Name="OpenButton">Open</Button>
+            <Button x:Name="OpenButton" Command="{x:Bind Path=ViewModel.OpenCommand}">Open</Button>
         </StackPanel>
 
         <local:Viewer Grid.Row="2" Document="{x:Bind Path=ViewModel.CurrentDocument, Mode=OneWay}"/>
