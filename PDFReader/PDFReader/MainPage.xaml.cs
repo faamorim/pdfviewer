@@ -14,7 +14,6 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using System.ComponentModel;
 
 // The Blank Page item template is documented at https://go.microsoft.com/fwlink/?LinkId=402352&clcid=0x409
 
@@ -23,32 +22,13 @@ namespace PDFReader
     /// <summary>
     /// An empty page that can be used on its own or navigated to within a Frame.
     /// </summary>
-    public sealed partial class MainPage : Page, INotifyPropertyChanged
+    public sealed partial class MainPage : Page
     {
         public MainPage()
         {
             this.InitializeComponent();
             OpenButton.Click += OpenButton_Click;
         }
-
-        Document _currentDocument;
-        public Document CurrentDocument
-        {
-            get => _currentDocument;
-            set
-            {
-                _currentDocument = value;
-
-                PropertyChangedEventHandler handler = this.PropertyChanged;
-                if (handler != null)
-                {
-                    handler(this, new PropertyChangedEventArgs(nameof(CurrentDocument)));
-                }
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         async void OpenButton_Click(object sender, RoutedEventArgs e)
         {
             // Get a file from the file picker.
@@ -60,12 +40,7 @@ namespace PDFReader
             // Create a PDFDocument and use it as the source for the PDFViewCtrl
             if (file != null)
             {
-                CurrentDocument = await Document.Load(file);
-            }
-            PropertyChangedEventHandler handler = this.PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(nameof(CurrentDocument)));
+                (DataContext as ManagerDataContext).CurrentDocument = await Document.Load(file);
             }
         }
     }

@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace PDFReader
 {
-    public class ViewerDataContext : DataContextBase
+    public class ManagerDataContext : DataContextBase
     {
-        DocumentManager _manager = null;
+        DocumentManager _manager;
         Document _currentDocument;
 
         private DocumentManager Manager
@@ -44,11 +44,12 @@ namespace PDFReader
         }
 
 
-        public ViewerDataContext()
+        public ManagerDataContext()
         {
+            Manager = new DocumentManager();
         }
 
-        ~ViewerDataContext()
+        ~ManagerDataContext()
         {
             Manager = null;
         }

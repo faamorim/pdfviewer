@@ -9,17 +9,21 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    <Page.DataContext>
+        <local:ManagerDataContext/>
+    </Page.DataContext>
+
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <local:Viewer Grid.Row="1" Document="{Binding CurrentDocument, ElementName=main}"/>
-
-        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
+        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
             <Button x:Name="OpenButton">Open</Button>
         </StackPanel>
+        
+        <local:Viewer Grid.Row="2" Document="{Binding CurrentDocument}"/>
     </Grid>
 </Page>
