@@ -24,12 +24,12 @@ namespace PDFReader
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        public ManagerDataContext ViewModel { get; set; }
+        public ManagerViewModel ViewModel { get; set; }
 
         public MainPage()
         {
             this.InitializeComponent();
-            ViewModel = new ManagerDataContext();
+            ViewModel = new ManagerViewModel();
             OpenButton.Click += OpenButton_Click;
         }
         async void OpenButton_Click(object sender, RoutedEventArgs e)

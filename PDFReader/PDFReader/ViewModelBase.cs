@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace PDFReader
 {
-    public abstract class DataContextBase : INotifyPropertyChanged
+    public abstract class ViewModelBase : INotifyPropertyChanged
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
