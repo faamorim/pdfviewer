@@ -19,14 +19,14 @@
         
         <muxc:MenuBar>
             <muxc:MenuBarItem Title="File">
-                <MenuFlyoutItem Text="New"/>
+                <!--<MenuFlyoutItem Text="New"/>-->
                 <MenuFlyoutItem Text="Open" Command="{x:Bind ViewModel.OpenCommand}"/>
-                <MenuFlyoutSeparator/>
+                <!--<MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Save"/>
                 <MenuFlyoutSeparator/>
                 <MenuFlyoutItem Text="Close"/>
                 <MenuFlyoutSeparator/>
-                <MenuFlyoutItem Text="Quit"/>
+                <MenuFlyoutItem Text="Quit"/>-->
             </muxc:MenuBarItem>
         </muxc:MenuBar>
 
