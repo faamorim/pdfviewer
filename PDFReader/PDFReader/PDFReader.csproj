@@ -122,13 +122,14 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="PDFHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
-    <Content Include="Assets\pdftron_layout_resources.plugin" />
+    <Content Include="Assets\Resources\pdftron_layout_resources.plugin" />
     <None Include="PDFReader_TemporaryKey.pfx" />
   </ItemGroup>
   <ItemGroup>
