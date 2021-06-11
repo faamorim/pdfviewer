@@ -29,6 +29,7 @@ namespace PDFReader
         public App()
         {
             this.InitializeComponent();
+            PDFHelper.Init();
             this.Suspending += OnSuspending;
         }
 
