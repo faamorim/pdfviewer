@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
+using Windows.UI.Xaml.Media;
+using muxc = Microsoft.UI.Xaml.Controls;
 
 namespace PDFReader
 {
@@ -40,8 +42,23 @@ namespace PDFReader
                 if(_currentDocument != value)
                 {
                     _currentDocument = value;
+                    OnPropertyChanged(nameof(SelectedTab));
                     OnPropertyChanged();
                 }
+            }
+        }
+
+        public ObservableCollection<muxc.TabViewItem> DocumentTabs
+        {
+            get; private set;
+        }
+
+        public muxc.TabViewItem SelectedTab
+        {
+            get => GetTabFromDocument(CurrentDocument);
+            set
+            {
+                CurrentDocument = (value?.Tag as Document);
             }
         }
 
@@ -54,6 +71,7 @@ namespace PDFReader
         public ManagerViewModel()
         {
             Manager = new DocumentManager();
+            DocumentTabs = new ObservableCollection<muxc.TabViewItem>();
             OpenCommand = new Command(new Action(Open));
         }
 
@@ -62,14 +80,52 @@ namespace PDFReader
             Manager = null;
         }
 
+        muxc.TabViewItem GenerateTabFromDocument(Document document)
+        {
+            muxc.TabViewItem tab = new muxc.TabViewItem();
+            tab.Tag = document;
+            UpdateTab(tab);
+            return tab;
+        }
+
+        muxc.TabViewItem GetTabFromDocument(Document document)
+        {
+            return DocumentTabs.FirstOrDefault(tab => tab.Tag == document) as muxc.TabViewItem;
+        }
+
+        void UpdateTab(Document document)
+        {
+            UpdateTab(GetTabFromDocument(document));
+        }
+
+        void UpdateTab(muxc.TabViewItem tab)
+        {
+            if (tab is null || !(tab.Tag is Document document))
+            {
+                return;
+            }
+            tab.Header = document.Name;
+            string glyph = document.File.FileType == ".pdf" ? "\xEA90" : "\xE8A5";
+            tab.IconSource = new muxc.FontIconSource() { FontFamily = new FontFamily("Segoe MDL2 Assets"), Glyph = glyph };
+        }
+
+
         private void Documents_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             switch (e.Action)
             {
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Add:
+                    foreach (Document newItem in e.NewItems)
+                    {
+                        DocumentTabs.Add(GenerateTabFromDocument(newItem));
+                    }
                     CurrentDocument = e.NewItems.Cast<object>().LastOrDefault(item => item is Document) as Document;
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Remove:
+                    foreach (Document oldItem in e.OldItems)
+                    {
+                        DocumentTabs.Remove(GetTabFromDocument(oldItem));
+                    }
                     if (e.OldItems.Contains(CurrentDocument))
                     {
                         CurrentDocument = Documents.First();
@@ -77,6 +133,7 @@ namespace PDFReader
                     break;
                 case System.Collections.Specialized.NotifyCollectionChangedAction.Reset:
                     CurrentDocument = null;
+                    DocumentTabs.Clear();
                     break;
             }
             OnPropertyChanged(nameof(Documents));

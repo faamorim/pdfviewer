@@ -12,8 +12,9 @@ namespace PDFReader
     {
         public pdftron.PDF.PDFDoc PDF { get; private set; }
         public StorageFile File { get; private set; }
-        public string Path { get; private set; }
-        public string Name { get; private set; }
+        public string Path => File.Path;
+        public string Name => File.Name;
+        public string FileType => File.FileType;
 
         private Document()
         {
@@ -49,9 +50,7 @@ namespace PDFReader
             Document doc = new Document()
             {
                 PDF = pdf,
-                File = file,
-                Path = file.Path,
-                Name = file.Name
+                File = file
             };
 
             return doc;

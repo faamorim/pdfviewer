@@ -17,12 +17,21 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         
-        <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left" Margin="5">
-            <Button x:Name="OpenButton" Command="{x:Bind Path=ViewModel.OpenCommand}">Open</Button>
-        </StackPanel>
+        <muxc:MenuBar>
+            <muxc:MenuBarItem Title="File">
+                <MenuFlyoutItem Text="New"/>
+                <MenuFlyoutItem Text="Open" Command="{x:Bind ViewModel.OpenCommand}"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Save"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Close"/>
+                <MenuFlyoutSeparator/>
+                <MenuFlyoutItem Text="Quit"/>
+            </muxc:MenuBarItem>
+        </muxc:MenuBar>
 
         <Border Grid.Row="1">
-            <muxc:TabView TabItemsSource="{x:Bind Path=ViewModel.Documents}" SelectedItem="{x:Bind Path=ViewModel.CurrentDocument, Mode=TwoWay}" AddTabButtonCommand="{x:Bind Path=ViewModel.OpenCommand}">
+            <muxc:TabView TabItemsSource="{x:Bind Path=ViewModel.DocumentTabs}" SelectedItem="{x:Bind Path=ViewModel.SelectedTab, Mode=TwoWay}" AddTabButtonCommand="{x:Bind Path=ViewModel.OpenCommand}">
                 <muxc:TabView.TabItemTemplate>
                     <DataTemplate/>
                 </muxc:TabView.TabItemTemplate>
