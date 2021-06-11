@@ -7,6 +7,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
+    xmlns:muxc="using:Microsoft.UI.Xaml.Controls"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid Background="{StaticResource ApplicationPageBackgroundThemeBrush}">
@@ -20,6 +21,21 @@
             <Button x:Name="OpenButton" Command="{x:Bind Path=ViewModel.OpenCommand}">Open</Button>
         </StackPanel>
 
+        <Border Grid.Row="1">
+            <muxc:TabView TabItemsSource="{x:Bind Path=ViewModel.Documents}" SelectedItem="{x:Bind Path=ViewModel.CurrentDocument, Mode=TwoWay}" AddTabButtonCommand="{x:Bind Path=ViewModel.OpenCommand}">
+                <muxc:TabView.TabItemTemplate>
+                    <DataTemplate/>
+                </muxc:TabView.TabItemTemplate>
+
+                <muxc:TabView.TabStripHeader>
+                    <Grid x:Name="ShellTitlebarInset" Background="Transparent" />
+                </muxc:TabView.TabStripHeader>
+                <muxc:TabView.TabStripFooter>
+                    <Grid x:Name="CustomDragRegion" Background="Transparent" />
+                </muxc:TabView.TabStripFooter>
+            </muxc:TabView>
+        </Border>
+        
         <local:Viewer Grid.Row="2" Document="{x:Bind Path=ViewModel.CurrentDocument, Mode=OneWay}"/>
     </Grid>
 </Page>

@@ -37,8 +37,11 @@ namespace PDFReader
             get => _currentDocument;
             set
             {
-                _currentDocument = value;
-                OnPropertyChanged();
+                if(_currentDocument != value)
+                {
+                    _currentDocument = value;
+                    OnPropertyChanged();
+                }
             }
         }
 

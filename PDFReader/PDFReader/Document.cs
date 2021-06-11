@@ -56,5 +56,10 @@ namespace PDFReader
 
             return doc;
         }
+
+        public override string ToString()
+        {
+            return !String.IsNullOrEmpty(Name) ? Name : "PDF Document";
+        }
     }
 }
